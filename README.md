@@ -1,15 +1,7 @@
 # theme-cli
 
-To install dependencies:
+Just enter the following command to download and extract the social svgs and components in the terminal. Happy coding! 🚀🚀🚀
 
 ```bash
-bun install
+bunx AltruisticCraftLab/theme-cli theme
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.5. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

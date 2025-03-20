@@ -7,7 +7,6 @@
   "scripts": {
     "build": "bun build scripts/theme-cli.ts --outdir dist --target bun"
   },
-  "module": "index.ts",
   "type": "module",
   "private": true,
   "devDependencies": {
