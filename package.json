@@ -1,0 +1,19 @@
+{
+  "name": "theme-cli",
+  "version": "0.1.0",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "logo": "dist/theme-cli.js"
+  },
+  "scripts": {
+    "build": "bun build scripts/theme-cli.ts --outdir dist --target bun"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
