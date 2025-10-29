@@ -15,7 +15,7 @@ var downloadFile = async (url, dest, retries = 3) => {
       const response = await fetch(url);
       if (response.status === 429) {
         if (attempt < retries) {
-          const waitTime = attempt * 2000;
+          const waitTime = attempt * 5000;
           console.log(`\u23F3 Rate limited. Waiting ${waitTime / 1000}s before retry ${attempt}/${retries}...`);
           await sleep(waitTime);
           continue;
@@ -60,7 +60,8 @@ for (const [index, file] of files.entries()) {
     await downloadFile(fileUrl, targetPath);
     successCount++;
     if (index < files.length - 1) {
-      await sleep(1000);
+      console.log(`\u23F8\uFE0F  Waiting 2s before next download...`);
+      await sleep(2000);
     }
   } catch (err) {
     failCount++;

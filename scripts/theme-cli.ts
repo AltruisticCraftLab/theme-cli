@@ -18,7 +18,7 @@ const downloadFile = async (url: string, dest: string, retries = 3) => {
 
       if (response.status === 429) {
         if (attempt < retries) {
-          const waitTime = attempt * 2000; // Progressive backoff: 2s, 4s, 6s
+          const waitTime = attempt * 5000; // Increased: 5s, 10s, 15s
           console.log(
             `⏳ Rate limited. Waiting ${
               waitTime / 1000
@@ -85,7 +85,8 @@ for (const [index, file] of files.entries()) {
 
     // Add delay between downloads (except after the last one)
     if (index < files.length - 1) {
-      await sleep(1000); // 1 second delay between downloads
+      console.log(`⏸️  Waiting 2s before next download...`);
+      await sleep(2000); // Increased to 2 seconds delay between downloads
     }
   } catch (err) {
     failCount++;
