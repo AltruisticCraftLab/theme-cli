@@ -9,13 +9,13 @@ var ensureDir = (dir) => {
     mkdirSync(dir, { recursive: true });
 };
 var sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-var downloadFile = async (url, dest, retries = 3) => {
+var downloadFile = async (url, dest, retries = 5) => {
   for (let attempt = 1;attempt <= retries; attempt++) {
     try {
       const response = await fetch(url);
       if (response.status === 429) {
         if (attempt < retries) {
-          const waitTime = attempt * 5000;
+          const waitTime = attempt * 1e4;
           console.log(`\u23F3 Rate limited. Waiting ${waitTime / 1000}s before retry ${attempt}/${retries}...`);
           await sleep(waitTime);
           continue;
@@ -53,15 +53,22 @@ var files = [
 console.log(`\u2B07\uFE0F Downloading ${files.length} React components...`);
 var successCount = 0;
 var failCount = 0;
+var skippedCount = 0;
 for (const [index, file] of files.entries()) {
   const fileUrl = `${repoBaseURL}/${file}`;
   const targetPath = join(targetDir, file);
+  if (existsSync(targetPath)) {
+    console.log(`\u23ED\uFE0F  Skipped (already exists): ${file}`);
+    skippedCount++;
+    successCount++;
+    continue;
+  }
   try {
     await downloadFile(fileUrl, targetPath);
     successCount++;
     if (index < files.length - 1) {
-      console.log(`\u23F8\uFE0F  Waiting 2s before next download...`);
-      await sleep(2000);
+      console.log(`\u23F8\uFE0F  Waiting 3s before next download...`);
+      await sleep(3000);
     }
   } catch (err) {
     failCount++;
@@ -70,6 +77,9 @@ for (const [index, file] of files.entries()) {
 console.log(`
 \uD83D\uDCCA Summary:`);
 console.log(`   \u2705 ${successCount} files downloaded successfully`);
+if (skippedCount > 0) {
+  console.log(`   \u23ED\uFE0F  ${skippedCount} files skipped (already existed)`);
+}
 if (failCount > 0) {
   console.log(`   \u274C ${failCount} files failed`);
   process.exit(1);

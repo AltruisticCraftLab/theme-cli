@@ -11,14 +11,14 @@ const ensureDir = (dir: string) => {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const downloadFile = async (url: string, dest: string, retries = 3) => {
+const downloadFile = async (url: string, dest: string, retries = 5) => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const response = await fetch(url);
 
       if (response.status === 429) {
         if (attempt < retries) {
-          const waitTime = attempt * 5000; // Increased: 5s, 10s, 15s
+          const waitTime = attempt * 10000; // Much longer: 10s, 20s, 30s, 40s, 50s
           console.log(
             `⏳ Rate limited. Waiting ${
               waitTime / 1000
@@ -73,11 +73,20 @@ console.log(`⬇️ Downloading ${files.length} React components...`);
 
 let successCount = 0;
 let failCount = 0;
+let skippedCount = 0;
 
 // Download all files with delay between requests
 for (const [index, file] of files.entries()) {
   const fileUrl = `${repoBaseURL}/${file}`;
   const targetPath = join(targetDir, file);
+
+  // Check if file already exists
+  if (existsSync(targetPath)) {
+    console.log(`⏭️  Skipped (already exists): ${file}`);
+    skippedCount++;
+    successCount++;
+    continue;
+  }
 
   try {
     await downloadFile(fileUrl, targetPath);
@@ -85,8 +94,8 @@ for (const [index, file] of files.entries()) {
 
     // Add delay between downloads (except after the last one)
     if (index < files.length - 1) {
-      console.log(`⏸️  Waiting 2s before next download...`);
-      await sleep(2000); // Increased to 2 seconds delay between downloads
+      console.log(`⏸️  Waiting 3s before next download...`);
+      await sleep(3000); // Increased to 3 seconds
     }
   } catch (err) {
     failCount++;
@@ -95,6 +104,9 @@ for (const [index, file] of files.entries()) {
 
 console.log(`\n📊 Summary:`);
 console.log(`   ✅ ${successCount} files downloaded successfully`);
+if (skippedCount > 0) {
+  console.log(`   ⏭️  ${skippedCount} files skipped (already existed)`);
+}
 if (failCount > 0) {
   console.log(`   ❌ ${failCount} files failed`);
   process.exit(1);
