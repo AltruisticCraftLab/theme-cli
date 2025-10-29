@@ -9,13 +9,13 @@ var ensureDir = (dir) => {
     mkdirSync(dir, { recursive: true });
 };
 var sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-var downloadFile = async (url, dest, retries = 5) => {
+var downloadFile = async (url, dest, retries = 3) => {
   for (let attempt = 1;attempt <= retries; attempt++) {
     try {
       const response = await fetch(url);
       if (response.status === 429) {
         if (attempt < retries) {
-          const waitTime = attempt * 1e4;
+          const waitTime = attempt * 5000;
           console.log(`\u23F3 Rate limited. Waiting ${waitTime / 1000}s before retry ${attempt}/${retries}...`);
           await sleep(waitTime);
           continue;
@@ -41,7 +41,7 @@ var downloadFile = async (url, dest, retries = 5) => {
     }
   }
 };
-var repoBaseURL = `https://raw.githubusercontent.com/AltruisticCraftLab/starter-snippets/main/theme`;
+var repoBaseURL = `https://cdn.jsdelivr.net/gh/AltruisticCraftLab/starter-snippets@main/theme`;
 var targetDir = join(process.cwd(), "src/components/theme");
 ensureDir(targetDir);
 var files = [
@@ -67,8 +67,7 @@ for (const [index, file] of files.entries()) {
     await downloadFile(fileUrl, targetPath);
     successCount++;
     if (index < files.length - 1) {
-      console.log(`\u23F8\uFE0F  Waiting 3s before next download...`);
-      await sleep(3000);
+      await sleep(500);
     }
   } catch (err) {
     failCount++;

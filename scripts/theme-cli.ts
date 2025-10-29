@@ -11,14 +11,14 @@ const ensureDir = (dir: string) => {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const downloadFile = async (url: string, dest: string, retries = 5) => {
+const downloadFile = async (url: string, dest: string, retries = 3) => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const response = await fetch(url);
 
       if (response.status === 429) {
         if (attempt < retries) {
-          const waitTime = attempt * 10000; // Much longer: 10s, 20s, 30s, 40s, 50s
+          const waitTime = attempt * 5000;
           console.log(
             `⏳ Rate limited. Waiting ${
               waitTime / 1000
@@ -56,7 +56,8 @@ const downloadFile = async (url: string, dest: string, retries = 5) => {
 
 // === Main ===
 
-const repoBaseURL = `https://raw.githubusercontent.com/AltruisticCraftLab/starter-snippets/main/theme`;
+// Use jsDelivr CDN instead of raw.githubusercontent.com
+const repoBaseURL = `https://cdn.jsdelivr.net/gh/AltruisticCraftLab/starter-snippets@main/theme`;
 
 const targetDir = join(process.cwd(), "src/components/theme");
 ensureDir(targetDir);
@@ -92,10 +93,9 @@ for (const [index, file] of files.entries()) {
     await downloadFile(fileUrl, targetPath);
     successCount++;
 
-    // Add delay between downloads (except after the last one)
+    // Minimal delay since jsDelivr has better rate limits
     if (index < files.length - 1) {
-      console.log(`⏸️  Waiting 3s before next download...`);
-      await sleep(3000); // Increased to 3 seconds
+      await sleep(500); // Just 500ms delay
     }
   } catch (err) {
     failCount++;
