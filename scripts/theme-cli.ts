@@ -1,6 +1,5 @@
 #!/usr/bin/env bun
 
-import { $ } from "bun";
 import { mkdirSync, existsSync } from "fs";
 import { join } from "path";
 
