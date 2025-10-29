@@ -41,14 +41,8 @@ var downloadFile = async (url, dest, retries = 3) => {
     }
   }
 };
-var moduleName = process.argv[2];
-if (!moduleName) {
-  console.log("\u2757 Usage: mycli <module-name>");
-  process.exit(1);
-}
-console.log(`\uD83D\uDE80 Fetching files for module: ${moduleName}`);
-var repoBaseURL = `https://raw.githubusercontent.com/AltruisticCraftLab/starter-snippets/main/${moduleName}`;
-var targetDir = join(process.cwd(), "src/components", moduleName);
+var repoBaseURL = `https://raw.githubusercontent.com/AltruisticCraftLab/starter-snippets/main/theme`;
+var targetDir = join(process.cwd(), "src/components/theme");
 ensureDir(targetDir);
 var files = [
   "moon-icon.tsx",

@@ -55,18 +55,10 @@ const downloadFile = async (url: string, dest: string, retries = 3) => {
 };
 
 // === Main ===
-const moduleName = process.argv[2];
 
-if (!moduleName) {
-  console.log("❗ Usage: mycli <module-name>");
-  process.exit(1);
-}
+const repoBaseURL = `https://raw.githubusercontent.com/AltruisticCraftLab/starter-snippets/main/theme`;
 
-console.log(`🚀 Fetching files for module: ${moduleName}`);
-
-const repoBaseURL = `https://raw.githubusercontent.com/AltruisticCraftLab/starter-snippets/main/${moduleName}`;
-
-const targetDir = join(process.cwd(), "src/components", moduleName);
+const targetDir = join(process.cwd(), "src/components/theme");
 ensureDir(targetDir);
 
 // Define all files to download
