@@ -56,7 +56,7 @@ const downloadFile = async (url: string, dest: string, retries = 3) => {
 // === Main ===
 
 // Use jsDelivr CDN instead of raw.githubusercontent.com
-const repoBaseURL = `https://cdn.jsdelivr.net/gh/AltruisticCraftLab/starter-snippets@main/theme`;
+const repoBaseURL = `https://cdn.jsdelivr.net/gh/AltruisticCraftLab/starter-snippets@latest/theme`;
 
 const targetDir = join(process.cwd(), "src/components/theme");
 ensureDir(targetDir);
