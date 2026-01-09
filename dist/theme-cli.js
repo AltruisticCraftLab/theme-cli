@@ -48,7 +48,7 @@ var files = [
   "moon-icon.tsx",
   "sun-icon.tsx",
   "system-icon.tsx",
-  "theme-toggle.tsx"
+  "theme-selector.tsx"
 ];
 console.log(`\u2B07\uFE0F Downloading ${files.length} React components...`);
 var successCount = 0;

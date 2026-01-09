@@ -66,7 +66,7 @@ const files = [
   "moon-icon.tsx",
   "sun-icon.tsx",
   "system-icon.tsx",
-  "theme-toggle.tsx",
+  "theme-selector.tsx",
 ];
 
 console.log(`⬇️ Downloading ${files.length} React components...`);
