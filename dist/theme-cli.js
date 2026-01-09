@@ -41,7 +41,7 @@ var downloadFile = async (url, dest, retries = 3) => {
     }
   }
 };
-var repoBaseURL = `https://cdn.jsdelivr.net/gh/AltruisticCraftLab/starter-snippets@latest/theme`;
+var repoBaseURL = `https://cdn.jsdelivr.net/gh/AltruisticCraftLab/starter-snippets@main/theme`;
 var targetDir = join(process.cwd(), "src/components/theme");
 ensureDir(targetDir);
 var files = [
